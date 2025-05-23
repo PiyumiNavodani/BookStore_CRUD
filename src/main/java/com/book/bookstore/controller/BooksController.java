@@ -23,12 +23,10 @@ import java.util.List;
 @AllArgsConstructor
 @RequestMapping("api/books")
 public class BooksController {
-//    private final BooksService booksService;
-    @Autowired
-    private BooksService booksService;
+    private final BooksService booksService;
 
     @PostMapping("/createBook")
-    public ResponseEntity<CommonResponse> createBook(BooksDTO booksDTO){
+    public ResponseEntity<CommonResponse> createBook(@RequestBody BooksDTO booksDTO){
         log.info("BooksController.createBook() method started");
         CommonResponse commonResponse = booksService.createBooks(booksDTO);
         log.info("BooksController.createBook() method ended");
@@ -51,7 +49,7 @@ public class BooksController {
         return ResponseEntity.status(commonResponse.getStatus()).body(commonResponse);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<CommonResponse> updateBookData(@RequestBody Books books, @PathVariable Integer id){
         log.info("BooksController.updateBoodData() method started");
         CommonResponse commonResponse = booksService.updateBook(books, id);
@@ -59,7 +57,7 @@ public class BooksController {
         return ResponseEntity.status(commonResponse.getStatus()).body(commonResponse);
     }
 
-    @DeleteMapping("/{id")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<CommonResponse> deleteBookData(@PathVariable Integer id){
         log.info("BooksController.deleteBookData() method started");
         CommonResponse commonResponse = booksService.deleteBook(id);

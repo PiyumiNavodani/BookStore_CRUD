@@ -11,7 +11,7 @@ import org.springframework.http.HttpStatus;
 @Getter
 @Setter
 public class CommonResponse<T> {
-    String message;
-    HttpStatus status;
-    Object data;
+    public String message;
+    public HttpStatus status;
+    public Object data;
 }
