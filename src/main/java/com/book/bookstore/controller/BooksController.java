@@ -4,6 +4,7 @@ import com.book.bookstore.dto.BooksDTO;
 import com.book.bookstore.dto.CommonResponse;
 import com.book.bookstore.model.Books;
 import com.book.bookstore.service.BooksService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,6 +33,7 @@ public class BooksController {
 //        this.booksService = booksService;
 //    }
 
+    @Tag(name = "create", description = "Create book record")
     @PostMapping("/createBook")
     public ResponseEntity<CommonResponse> createBook(@RequestBody final BooksDTO booksDTO){
         log.info("BooksController.createBook() method started");
@@ -40,6 +42,7 @@ public class BooksController {
         return ResponseEntity.status(commonResponse.getStatus()).body(commonResponse);
     }
 
+    @Tag(name = "get", description = "Get list of books")
     @GetMapping("bookList")
     public ResponseEntity<CommonResponse<List<Books>>> getBookList(){
         log.info("BooksController.getBookList() method started");
@@ -48,6 +51,7 @@ public class BooksController {
         return ResponseEntity.status(commonResponse.getStatus()).body(commonResponse);
     }
 
+    @Tag(name = "get", description = "Get one book by ID")
     @GetMapping("/{id}")
     public ResponseEntity<CommonResponse> getBookById(@PathVariable final Integer id){
         log.info("BooksController.getBookById() method started");
@@ -56,6 +60,7 @@ public class BooksController {
         return ResponseEntity.status(commonResponse.getStatus()).body(commonResponse);
     }
 
+    @Tag(name = "put", description = "Update ID related book record")
     @PutMapping("/update/{id}")
     public ResponseEntity<CommonResponse> updateBookData(@RequestBody final Books books, @PathVariable final Integer id){
         log.info("BooksController.updateBoodData() method started");
@@ -64,6 +69,7 @@ public class BooksController {
         return ResponseEntity.status(commonResponse.getStatus()).body(commonResponse);
     }
 
+    @Tag(name = "delete", description = "Delete ID related book record")
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<CommonResponse> deleteBookData(@PathVariable final Integer id){
         log.info("BooksController.deleteBookData() method started");
