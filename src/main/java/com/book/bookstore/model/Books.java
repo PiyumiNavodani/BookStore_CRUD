@@ -11,8 +11,7 @@ import lombok.*;
 @Table(name = "books")
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
+@RequiredArgsConstructor
 @ToString
 public class Books {
 

@@ -7,12 +7,14 @@ import com.book.bookstore.model.Books;
 import com.book.bookstore.repository.BooksRepository;
 import com.book.bookstore.service.BooksService;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -21,25 +23,36 @@ import java.util.stream.Collectors;
  */
 @Service
 @Slf4j
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class BookServiceImpl implements BooksService {
     private final BooksRepository booksRepository;
     private final ModelMapper modelMapper;
 
+//    public BookServiceImpl(BooksRepository booksRepository, ModelMapper modelMapper) {
+//        this.booksRepository = booksRepository;
+//        this.modelMapper = modelMapper;
+//    }
+
     @Override
-    public CommonResponse<Books> createBooks(BooksDTO booksDTO) {
+    public CommonResponse<Books> createBooks(final BooksDTO booksDTO) {
         log.info("BookServiceImpl.createBooks() method started");
         CommonResponse commonResponse =  new CommonResponse<>();
+        if (!(booksDTO.getBookName().equals("")) || !(booksDTO.getAuthorName().equals(""))){
+            Books books = new Books();
+            books.setBookName(booksDTO.getBookName());
+            books.setAuthorName(booksDTO.getAuthorName());
 
-        Books books = new Books();
-        books.setBookName(booksDTO.getBookName());
-        books.setAuthorName(booksDTO.getAuthorName());
+            commonResponse.setStatus(HttpStatus.OK);
+            commonResponse.setMessage("New book created");
+            commonResponse.setData(books);
 
-        commonResponse.setStatus(HttpStatus.OK);
-        commonResponse.setMessage("New book created");
-        commonResponse.setData(books);
+            booksRepository.save(books);
+        }else {
+            commonResponse.setStatus(HttpStatus.BAD_REQUEST);
+            commonResponse.setMessage("Cannot create empty record");
+            commonResponse.setData(null);
+        }
 
-        booksRepository.save(books);
         log.info("BookServiceImpl.createBooks() method ended");
 
         return commonResponse;
@@ -70,7 +83,7 @@ public class BookServiceImpl implements BooksService {
     }
 
     @Override
-    public CommonResponse<Books> getBookById(Integer id) {
+    public CommonResponse<Books> getBookById(final Integer id) {
         log.info("BookServiceImpl.getBookById() method started");
         CommonResponse commonResponse = new CommonResponse();
 
@@ -92,7 +105,7 @@ public class BookServiceImpl implements BooksService {
     }
 
     @Override
-    public CommonResponse<Books> updateBook(Books books, Integer id) {
+    public CommonResponse<Books> updateBook(final Books books, final Integer id) {
         log.info("BookServiceImpl.updateBook() method started");
         CommonResponse commonResponse = new CommonResponse();
 
@@ -122,7 +135,7 @@ public class BookServiceImpl implements BooksService {
     }
 
     @Override
-    public CommonResponse<Books> deleteBook(Integer id) {
+    public CommonResponse<Books> deleteBook(final Integer id) {
         log.info("BookServiceImpl.deleteBook() method started");
         CommonResponse commonResponse = new CommonResponse();
 
